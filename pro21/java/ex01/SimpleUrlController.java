@@ -1,5 +1,7 @@
 package com.spring.ex01;
 
+//simpleUrlController.java의 역할은 매핑된 요청에 대해 컨트롤러의 기능을 수행합니다.
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
