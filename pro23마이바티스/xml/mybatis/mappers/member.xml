@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.member"> <!-- member.xml의 네임스페이스를 지정합니다. --> 
+	<resultMap type="memberVO" id="memResult">
+		<result property="id" column="id" />
+		<result property="pwd" column="pwd" />
+		<result property="name" column="name" />
+		<result property="email" column="email" />
+		<result property="joinDate" column="joinDate" />
+		<!-- property부분은 memberVO의 필드들이고 column부분은 mariaDB에서의 필드명들 -->
+	</resultMap>
+	
+	<select id="selectAllMemberList" resultMap="memResult">
+		<![CDATA[
+			select * from t_member order by joinDate desc
+		]]>
+		<!-- xml에서는 오브젝트형 DMBS에서는 관계형(?)이기때문에 오류를 방지하기위해서 <![CDATA[ ]]>를 추가 -->
+	</select>
+</mapper>
