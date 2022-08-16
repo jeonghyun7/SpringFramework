@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- web.xml의 역할은 브라우저에서 *.do로 요청시 스프링의 
+DispatcherServlet 클래스가 요청을 받을 수 있게 서블릿 매핑을합니다._1차맵핑하는 아이 -->
+
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>pro21</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+  	<servlet-name>action</servlet-name>		<!-- DispatcherServlet이 인식하고 관련된 컨트롤러를 열어준다. -->
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  	<!-- 값이 1이상이면 톰캣 실행시 DispatcherServlet을 미리 메모리에 로드합니다.(지정않거나 음수로 지정하면 브라우저에서 요청시 메모리에 로드합니다. -->
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>action</servlet-name>
+  	<url-pattern>*.do</url-pattern> <!-- .do로 끝나면 action을 실행한다. -->
+  </servlet-mapping>
+  
+</web-app>

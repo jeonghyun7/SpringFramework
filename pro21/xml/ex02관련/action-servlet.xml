@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- action-servlet.xml의 역할은 스프링 프레임워크에서 필요한 빈들을 설정합니다. 
+	2차 맵핑하는 아이 -->
+	
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!--  
+	<bean id="simpleUrlController" class="com.spring.ex01.SimpleUrlController" />
+	
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>	// 맵핑네임이 /test/index.do로 호출하면 simpleUrlController을 호출해주세요
+				<prop key="/test/index.do">simpleUrlController</prop>
+			</props>
+		</property>	
+	</bean> 
+	-->
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+				value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/test/" />
+		<property name="suffix" value=".jsp" />	
+	</bean>
+	<!-- 컨트롤러에서 ModelAndView 인자로 뷰이름이 반환되면 InternalResourceViewResolver의
+	프로퍼티 prefix 속성에서 지정된 /test 폴더에서 modelAndView 인자로 넘어온 뷰이름에 해당되는 JSP를
+	선택하여 DispatcherServlet으로 보냅니다.
+	
+	 -->
+	
+	<bean id="userUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/test/*.do">userController</prop>
+				<!-- url요청명이 //test/*.do로 시작되면 userController 빈을 요청합니다.
+				키와 클래스 -->
+			</props>
+		</property>	
+	</bean>
+	
+	<bean id="userController" class="com.spring.ex02.UserController">
+		<property name="methodNameResolver">
+			<ref local="userMethodNameResolver" />
+		</property>
+	</bean>
+	<!-- methodNameResolver 프로퍼티에 userMethodNameResolver 빈객체의 주소를 주입해서 지정한 요청명에 대해 직접 메서드를 호출하게 합니다. -->
+	
+	<bean id="userMethodNameResolver"
+			class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/test/login.do">login</prop>
+				<prop key="/test/memberInfo.do">memberInfo</prop>
+			</props>
+		</property>
+	</bean>
+	<!--  PropertiesMethodNameResolver를 이용해 /test/login.do로 요청하면 userController의 login메서드를 호출합니다.
+	클래스 안의 메서드들(맵핑)
+	login.do로 끝나면 login메서드를 , memberInfo.do로 끝나면 컨트롤러의 memberInfo메서드를 호출 -->
+</beans>
