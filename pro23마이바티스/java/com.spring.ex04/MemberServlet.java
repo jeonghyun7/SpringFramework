@@ -117,7 +117,7 @@ public class MemberServlet extends HttpServlet {
 		}	 else if(action.equals("foreachSelect")) {
 			List<String> nameList=new ArrayList<String>();
 			nameList.add("홍길동");
-			nameList.add("차두리");
+			nameList.add("차범근");
 			nameList.add("이순신");
 			List<MemberVO> membersList=dao.foreachSelect(nameList);
 			request.setAttribute("membersList", membersList);
@@ -128,12 +128,13 @@ public class MemberServlet extends HttpServlet {
 			memList.add(new MemberVO("m1", "1234", "박길동", "m1@test.com"));
 			memList.add(new MemberVO("m2", "1234", "이길동", "m2@test.com"));
 			memList.add(new MemberVO("m3", "1234", "김길동", "m3@test.com"));
-			int result=dao.foreachInsert(memList);
+			dao.foreachInsert(memList);
 			nextPage="/mem4.do?action=listMembers";
 			
 		} else if(action.equals("selectLike")) {
 			String name="길동";
-			List<MemberVO> membersList=dao.selectLike(name);
+			System.out.println(name);
+			List membersList=dao.selectLike(name);
 			request.setAttribute("membersList", membersList);
 			nextPage="test03/listMembers.jsp";
 		}
