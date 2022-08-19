@@ -29,6 +29,7 @@
 	 -->
 	 
 	 <!--  입력관련  -->
+	 <!-- SimpleUrlHandlerMapping로 1차맵핑해주어(컨트롤러 빈으로감) -->
 	 <bean id="memberUrlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -38,6 +39,8 @@
 		</property>
 	</bean>
 	 
+	 <!-- class를 참조하여 만든 bean(id) -->
+	 <!-- 1차맵핑해주어(컨트롤러 빈이 참조하는 class 컨트롤러를 열어줌.) -->
 	<bean id="memberController"
 		class="com.spring.member.controller.MemberControllerImpl">
 		<property name="methodNameResolver">
@@ -45,7 +48,7 @@
 		</property>
 		<property name="memberService" ref="memberService"/>
 	</bean>
-	
+	<!-- PropertiesMethodNameResolver로 2차맵핑해줌(컨트롤러안의 메소드호출) -->
 	<bean id="memberMethodResolver"
 		class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
 		<property name="mappings">
@@ -54,6 +57,7 @@
 				<prop key="/member/addMember.do">addMember</prop>
 				<prop key="/member/removeMember.do">removeMember</prop>
 				<prop key="/member/memberForm.do">form</prop>
+				<!-- key값을 치면 prop태그안을 호출해줌. -->
 			</props>
 		</property>	
 	</bean>
