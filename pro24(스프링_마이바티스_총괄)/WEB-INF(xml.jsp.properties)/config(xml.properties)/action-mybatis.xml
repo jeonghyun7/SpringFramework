@@ -44,3 +44,5 @@ xmlns="http://www.springframework.org/schema/beans">
 	</bean>
 	
 </beans>
+
+<!--  추후 트랜잭션사용시 트랜잭션관계된 빈객체도 생성해줌 -->
