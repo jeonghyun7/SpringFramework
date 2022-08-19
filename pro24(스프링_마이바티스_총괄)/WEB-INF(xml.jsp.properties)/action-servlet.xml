@@ -15,6 +15,7 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 		
+		<!--  출력관련  -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -26,6 +27,17 @@
 	프로퍼티 prefix 속성에서 지정된 /WEB-INF/views/member 폴더에서 modelAndView 인자로 넘어온 뷰이름에 해당되는 JSP를
 	선택하여 DispatcherServlet으로 보냅니다.
 	 -->
+	 
+	 <!--  입력관련  -->
+	 <bean id="memberUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/member/*.do">memberController</prop>
+			</props>
+		</property>
+	</bean>
+	 
 	<bean id="memberController"
 		class="com.spring.member.controller.MemberControllerImpl">
 		<property name="methodNameResolver">
@@ -44,15 +56,6 @@
 				<prop key="/member/memberForm.do">form</prop>
 			</props>
 		</property>	
-	</bean>
-	
-	<bean id="memberUrlMapping"
-		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="/member/*.do">memberController</prop>
-			</props>
-		</property>
 	</bean>
 	
 </beans>
