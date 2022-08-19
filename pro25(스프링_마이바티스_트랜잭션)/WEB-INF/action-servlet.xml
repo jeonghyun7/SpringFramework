@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- action-servlet.xml의 역할은 스프링 프레임워크에서 필요한 빈들을 설정합니다. 
+	2차 맵핑하는 아이 -->
+	
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		
+		<!--  출력관련  -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+				value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/account/" />
+		<property name="suffix" value=".jsp" />	
+	</bean>
+	<!-- 컨트롤러에서 ModelAndView 인자로 뷰이름이 반환되면 InternalResourceViewResolver의
+	프로퍼티 prefix 속성에서 지정된 /WEB-INF/views/member 폴더에서 modelAndView 인자로 넘어온 뷰이름에 해당되는 JSP를
+	선택하여 DispatcherServlet으로 보냅니다.
+	 -->
+	 
+	 <!--  입력관련  -->
+	 <!-- SimpleUrlHandlerMapping로 1차맵핑해주어(컨트롤러 빈으로감) -->
+	 <bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/account/*.do">accController</prop>
+			</props>
+		</property>
+	</bean>
+	 
+	 <!-- class를 참조하여 만든 bean(id) -->
+	 <!-- 1차맵핑해주어(컨트롤러 빈이 참조하는 class 컨트롤러를 열어줌.) -->
+	<bean id="accController"
+		class="com.spring.account.AccountController">
+		<property name="methodNameResolver">
+			<ref local="methodResolver"/>
+		</property>
+		<property name="accService" ref="accService"/>
+	</bean>
+	<!-- PropertiesMethodNameResolver로 2차맵핑해줌(컨트롤러안의 메소드호출) -->
+	<bean id="methodResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/account/sendMoney.do">sendMoney</prop>
+				
+				<!-- key값을 치면 prop태그안을 호출해줌. -->
+			</props>
+		</property>	
+	</bean>
+	
+</beans>

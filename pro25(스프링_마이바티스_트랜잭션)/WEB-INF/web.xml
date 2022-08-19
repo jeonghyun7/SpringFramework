@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xmlns="http://java.sun.com/xml/ns/javaee"
+ 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_0.xsd"
+ 	id="WebApp_ID" version="3.0">
+  <display-name>pro25</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <listener>
+  	<listener-class>
+  		org.springframework.web.context.ContextLoaderListener
+  	</listener-class>
+  </listener>
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		/WEB-INF/config/action-mybatis.xml <!-- mybatis관련(모델에대한)환경설정_파일이고 ibatis라고도함 -->
+  		/WEB-INF/config/action-service.xml
+  	</param-value>
+  </context-param>
+  
+  <!-- DispatcherServlet인 action-servlet이 실행될때 위의 contextConfigLocation의 
+  action-myBatis와 action-service가 같이 실행
+  action-으로 시작하는 파일들을 읽을수 있게함 아래 servlet-name이 action이기때문에 -->
+  <servlet>
+  	<servlet-name>action</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>	<!-- 이 부분 때문에 action-servlet.xml이라고 이름을 생성함 -->
+  	<servlet-name>action</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
