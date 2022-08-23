@@ -22,15 +22,7 @@ public class MemberDAOImpl implements MemberDAO {
 		return membersList;
 		//membersList의 값이 호출했던 서블릿의 dao.selectAllMemberList()메서드 위치로 반환
 	}
-/*수정하기 구현은 아직.
-	@Override
-	public MemberVO selectMemberById(String id) throws DataAccessException {
-		
-		MemberVO memberVO = null;
-		memberVO = sqlSession.selectOne("mapper.member.selectMemberById", id);
-		return memberVO;
-	}
-*/	
+
 	@Override
 	public int insertMember(MemberVO memberVO) throws DataAccessException {
 		
@@ -39,21 +31,32 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	
-/*수정하기 구현은 아직.
+	@Override
+	public int deleteMember(String id) throws DataAccessException {
+		
+		int result = sqlSession.delete("mapper.member.deleteMember", id);
+		return result;		
+	}
+	
+	
+	//추가구현코드
+	@Override
+	public MemberVO modMember(String id) throws DataAccessException {
+		
+		MemberVO memberVO = sqlSession.selectOne("mapper.member.selectMemberById", id);
+		return memberVO;
+	}
+	
+	
+	//추가구현코드
 	@Override
 	public int updateMember(MemberVO memberVO) throws DataAccessException {
 		
 		int result = sqlSession.update("mapper.member.updateMember", memberVO);
 		return result;
 	}
-*/
-	@Override
-	public int deleteMember(String id) throws DataAccessException {
-		
-		int result = sqlSession.delete("mapper.member.deleteMember", id);
-		return result;
-		
-	}
+	
+	
 	@Override
 	public MemberVO loginById(MemberVO memberVO) throws DataAccessException {
 		
