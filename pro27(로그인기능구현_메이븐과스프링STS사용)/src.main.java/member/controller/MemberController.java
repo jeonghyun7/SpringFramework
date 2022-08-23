@@ -13,10 +13,17 @@ import com.spring.pro27.member.vo.MemberVO;
 public interface MemberController {
 
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception; 
-	//public ModelAndView selectMemberById(@RequestParam("id") String id,HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
 	public ModelAndView addMember(@ModelAttribute("info") MemberVO memberVO, HttpServletRequest request, HttpServletResponse response) throws Exception;
-	//public ModelAndView modMember(@ModelAttribute("info") MemberVO memberVO, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
 	public ModelAndView removeMember(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
+	//추가코드
+	public ModelAndView modMember(String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
+	//추가코드
+	public ModelAndView updateMember(MemberVO member, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
 	
 	public ModelAndView login(@ModelAttribute("member") MemberVO member,
 								RedirectAttributes rAttr,

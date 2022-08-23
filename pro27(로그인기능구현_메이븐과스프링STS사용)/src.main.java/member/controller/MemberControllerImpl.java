@@ -44,17 +44,6 @@ public class MemberControllerImpl implements MemberController {
 		return mav;
 	}
 	
-	/*수정하기 구현은 아직.
-	@Override
-	@RequestMapping(value="/member/selectMemberById.do" , method = RequestMethod.GET)
-	public ModelAndView selectMemberById(@RequestParam("id") String id,HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		MemberVO memberVO = memberService.selectMemberById(id);
-		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
-		mav.addObject("memberVO", memberVO);
-		return mav;
-	}
-	*/
 	@Override
 	@RequestMapping(value="/member/addMember.do" , method = RequestMethod.POST)
 	public ModelAndView addMember(@ModelAttribute("member") MemberVO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -66,17 +55,6 @@ public class MemberControllerImpl implements MemberController {
 	}
 	
 	
-/*수정하기 구현은 아직.
-	@Override
-	@RequestMapping(value="/member/modMember.do" , method = RequestMethod.POST)
-	public ModelAndView modMember(@ModelAttribute("member") MemberVO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		int result = 0;
-		result = memberService.modMember(member);
-		ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
-		return mav;
-	}
-*/
 	@Override
 	@RequestMapping(value="/member/removeMember.do" , method = RequestMethod.GET)
 	public ModelAndView removeMember(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -87,7 +65,40 @@ public class MemberControllerImpl implements MemberController {
 		return mav;
 	}
 	
+	//추가구현코드
+	@Override
+	@RequestMapping(value="/member/modMember.do" , method = RequestMethod.GET)
+	public ModelAndView modMember(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = getViewName(request);
+      	System.out.println(viewName);
+      	MemberVO memberVO = memberService.modMember(id);
+      	request.setAttribute("member", memberVO);
+      	ModelAndView mav = new ModelAndView();
+      	mav.setViewName(viewName);
+      	return mav;
+	}
+	
+	//추가구현코드
+	 			//, @RequestParam("id") String id
+   @Override
+   @RequestMapping(value =  "/member/updateMember.do", method = RequestMethod.GET)
+   public ModelAndView updateMember(@ModelAttribute("member") MemberVO memberVO , HttpServletRequest request, HttpServletResponse response) throws Exception {
+//      String viewName = getViewName(request);
+      request.setCharacterEncoding("utf-8");
+//      System.out.println(viewName);
+      System.out.println();
+      System.out.println(memberVO.getName());
+      System.out.println(memberVO.getPwd());
+      System.out.println(memberVO.getEmail());
+      
+      int result = 0;
+      result = memberService.updateMember(memberVO);
+      ModelAndView mav = new ModelAndView("redirect:/member/listMembers.do");
+      return mav;      
+   }
 
+	
+	
 	@RequestMapping(value = { "/member/loginForm.do" , "/member/memberForm.do" }, method = RequestMethod.GET)
 	//@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
 	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
