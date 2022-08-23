@@ -34,7 +34,7 @@
 			<td>${member.joinDate}</td>
 			<td><a href="${contextPath}/member/removeMember.do?id=${member.id}">
 			삭제하기</a></td>
-			<td><a href="${contextPath}/member/selectMemberById.do?id=${member.id}">수정하기</a></td> <!-- 수정하기 추가해야함. -->
+			<td><a href="${contextPath}/member/modMember.do?id=${member.id}">수정하기</a></td> <!-- 수정하기 추가해야함. -->
 		</tr>
 		</c:forEach>
 	</table>
