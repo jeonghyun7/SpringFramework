@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 
-
+ -->
 	<select id="selectMemberById" resultType="memberVO" parameterType="String">
 		<![CDATA[
 			select * from t_member
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			pwd=#{pwd}
 		]]>
 	</select>
- -->	
+	
 	<insert id="insertMember" parameterType="memberVO">
 		<![CDATA[
 			insert into t_member(id, pwd, name, email)
