@@ -5,7 +5,8 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:mvc="http://www.springframework.org/schema/mvc">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -44,4 +45,12 @@
 	<context:component-scan base-package="com.spring.pro27" />
 	<!-- 패키지와 애너테이션을 지정합니다. -->
 	
+	
+	<!-- 인터셉터 기능을 사용하도록 설정합니다. -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*/*.do"/>
+				<beans:bean class="com.spring.pro27.member.interceptor.ViewNameInterceptor"></beans:bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans:beans>
