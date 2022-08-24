@@ -34,8 +34,8 @@ public class MemberControllerImpl implements MemberController {
 	@Override
 	@RequestMapping(value="/member/listMembers.do" , method = RequestMethod.GET)
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = getViewName(request);
-		
+//		String viewName = getViewName(request);
+		String viewName = (String)request.getAttribute("viewName");
 		logger.info("viewName: " + viewName);
 		logger.debug("debug레벨 : viewName = "+ viewName);
 		List membersList = memberService.listMembers();
@@ -69,7 +69,8 @@ public class MemberControllerImpl implements MemberController {
 	@Override
 	@RequestMapping(value="/member/modMember.do" , method = RequestMethod.GET)
 	public ModelAndView modMember(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = getViewName(request);
+//		String viewName = getViewName(request);
+		String viewName = (String)request.getAttribute("viewName");
       	System.out.println(viewName);
       	MemberVO memberVO = memberService.modMember(id);
       	request.setAttribute("member", memberVO);
@@ -81,7 +82,7 @@ public class MemberControllerImpl implements MemberController {
 	//추가구현코드
 	 			//, @RequestParam("id") String id
    @Override
-   @RequestMapping(value =  "/member/updateMember.do", method = RequestMethod.GET)
+   @RequestMapping(value =  "/member/updateMember.do", method = RequestMethod.POST)
    public ModelAndView updateMember(@ModelAttribute("member") MemberVO memberVO , HttpServletRequest request, HttpServletResponse response) throws Exception {
 //      String viewName = getViewName(request);
       request.setCharacterEncoding("utf-8");
@@ -102,8 +103,8 @@ public class MemberControllerImpl implements MemberController {
 	@RequestMapping(value = { "/member/loginForm.do" , "/member/memberForm.do" }, method = RequestMethod.GET)
 	//@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
 	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		String viewName = getViewName(request);
+		String viewName = (String)request.getAttribute("viewName");
+//		String viewName = getViewName(request);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		return mav;
@@ -143,7 +144,7 @@ public class MemberControllerImpl implements MemberController {
 	@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
 	public ModelAndView form(@RequestParam(value= "result", required=false) String result, HttpServletRequest request, HttpServletResponse response) throws Exception {
 								//로그인창 요청시 매개변수 result가 전송되면 변수 result에 값을 저장합니다. 최초로 로그인창을 요청할 때는 매개변수 result가 전송되지 않으므로 무시합니다.
-			//String viewName = getViewName(request);
+//			String viewName = getViewName(request);
 			String viewName = (String)request.getAttribute("viewName");
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("result", result);
@@ -154,47 +155,36 @@ public class MemberControllerImpl implements MemberController {
 			return mav;
 		}
 	
-	private String getViewName(HttpServletRequest request) throws Exception{
-		
-		String contextPath = request.getContextPath();
-		String uri = (String)request.getAttribute("javax.servlet.include.request_uri");
-		
-		if(uri == null || uri.trim().equals("")) {
-			uri = request.getRequestURI();
-			
-		}
-		
-		//http://localhost:8080/member/listMember.do로 요청시
-		int begin = 0; //
-		if(!((contextPath == null) || ("".equals(contextPath)))) {
-			begin = contextPath.length(); //전체 요청명의 길이를 구함
-			
-		}
-		
-		int end;
-		if(uri.indexOf(";")!=-1) {
-			end=uri.indexOf(";");	//요청 uri에 ';'가 있을 경우 ';' 문자 위치를 구함
-		} else if(uri.indexOf("?")!=-1) {
-			end=uri.indexOf("?"); //요청 uri에 '?'가 있을 경우 '?' 문자 위치를 구함
-		} else {
-			end=uri.length();
-		}
-		
-		//http://localhost:8080/member/listMember.do로 요청시 먼저 '.do'를 제거한
-		//http://localhost:8080/member/listMember를 구한 후,
-		//다시 http://localhost:8080/member/listMember에서 역순으로 첫번째
-		// '/' 위치를 구한 후, 그 뒤의 listMember를 구한다.
-		String viewName=uri.substring(begin,end);
-		if(viewName.indexOf(".")!=-1) {
-			viewName=viewName.substring(0,viewName.lastIndexOf("."));
-			//요청명에서 역순으로 최초 '.'의 위치를 구한후, '.do' 앞에까지의 문자열을 구함
-		}
-		if(viewName.lastIndexOf("/")!=-1) {
-			viewName = viewName.substring(viewName.lastIndexOf("/",1), viewName.length());
-			//member/listMembers.do로 요청할 경우 member/listMember를 파일 이름으로 가져옵니다.
-		}
-		System.out.println(viewName);
-		return viewName;
-	}
+		/*
+		 * private String getViewName(HttpServletRequest request) throws Exception{
+		 * 
+		 * String contextPath = request.getContextPath(); String uri =
+		 * (String)request.getAttribute("javax.servlet.include.request_uri");
+		 * 
+		 * if(uri == null || uri.trim().equals("")) { uri = request.getRequestURI();
+		 * 
+		 * }
+		 * 
+		 * //http://localhost:8080/member/listMember.do로 요청시 int begin = 0; //
+		 * if(!((contextPath == null) || ("".equals(contextPath)))) { begin =
+		 * contextPath.length(); //전체 요청명의 길이를 구함
+		 * 
+		 * }
+		 * 
+		 * int end; if(uri.indexOf(";")!=-1) { end=uri.indexOf(";"); //요청 uri에 ';'가 있을
+		 * 경우 ';' 문자 위치를 구함 } else if(uri.indexOf("?")!=-1) { end=uri.indexOf("?"); //요청
+		 * uri에 '?'가 있을 경우 '?' 문자 위치를 구함 } else { end=uri.length(); }
+		 * 
+		 * //http://localhost:8080/member/listMember.do로 요청시 먼저 '.do'를 제거한
+		 * //http://localhost:8080/member/listMember를 구한 후, //다시
+		 * http://localhost:8080/member/listMember에서 역순으로 첫번째 // '/' 위치를 구한 후, 그 뒤의
+		 * listMember를 구한다. String viewName=uri.substring(begin,end);
+		 * if(viewName.indexOf(".")!=-1) {
+		 * viewName=viewName.substring(0,viewName.lastIndexOf(".")); //요청명에서 역순으로 최초
+		 * '.'의 위치를 구한후, '.do' 앞에까지의 문자열을 구함 } if(viewName.lastIndexOf("/")!=-1) {
+		 * viewName = viewName.substring(viewName.lastIndexOf("/",1),
+		 * viewName.length()); //member/listMembers.do로 요청할 경우 member/listMember를 파일
+		 * 이름으로 가져옵니다. } System.out.println(viewName); return viewName; }
+		 */
 	
 }
