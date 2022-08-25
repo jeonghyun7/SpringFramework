@@ -21,12 +21,12 @@
 </style>
 </head>
 <body>
-	<form method="get" action="${contextPath}/member/updateMember.do">
+	<form method="post" action="${contextPath}/member/updateMember.do">
 		<h1 class="text_center">회원 정보 수정창</h1>
 	<table align="center">
 			<tr>
 				<td width="200"><p align="right">아이디</p></td>
-				<td width="400"><input type="text" name="id" value="${member.id}" disabled="disabled"></td>
+				<td width="400"><input type="text" name="id" value="${member.id}" readonly="readonly"></td>
 			</tr>
 			<tr>
 				<td width="200"><p align="right">비밀번호</p></td>
