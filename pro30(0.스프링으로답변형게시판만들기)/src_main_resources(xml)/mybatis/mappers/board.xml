@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.board"> <!-- member.xml의 네임스페이스를 지정합니다. --> 
+ 
+	<resultMap  id="articlesResult" type="articleVO">
+		<result property="level" column="level" />
+		<result property="articleNO" column="articleNO" />
+		<result property="parentNO" column="parentNO" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="writeDate" column="writeDate"/>
+		<result property="imageFileName" column="imageFileName"/>
+	</resultMap>
+
+
+	<select id="selectAllArticlesList" resultMap="articlesResult">
+		<![CDATA[
+			SELECT fnc.level, tb.articleNo, tb.parentNo, tb.title, tb.content, tb.writeDate, tb.imageFileName, tb.id
+			FROM (SELECT function_hierarchical() AS articleNO, parentNO, @level AS LEVEL, title, content, imageFileName,writeDate, id FROM
+			(SELECT @start_with:=0,@articleNO:=@start_with, @level:=0) tbl JOIN t_board) fnc
+			left outer join t_board tb ON tb.articleNo = fnc.articleNo
+		]]>
+
+	</select>
+</mapper>
