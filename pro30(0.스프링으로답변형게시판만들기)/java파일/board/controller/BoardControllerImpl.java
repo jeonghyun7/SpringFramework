@@ -50,7 +50,7 @@ public class BoardControllerImpl implements BoardController {
 		
 	}
 
-/*	
+	
 	//한 개 이미지 글쓰기
 	@Override
 	@RequestMapping(value="/board/addNewArticle.do" ,method = RequestMethod.POST)
@@ -106,7 +106,7 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 	
-
+	/*
 	//한 개의 이미지 보여주기
 	@RequestMapping(value="/board/viewArticle.do" ,method = RequestMethod.GET)
 	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO,
@@ -203,8 +203,8 @@ public class BoardControllerImpl implements BoardController {
 		}
 		return resEnt;
 	}
-	
-	
+*/	
+	//글쓰기창 눌렀을때 articleform.do나 loginform.do로 이동
 	@RequestMapping(value = "/board/*Form.do", method = RequestMethod.GET)
 	private ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
@@ -235,7 +235,7 @@ public class BoardControllerImpl implements BoardController {
 		
 		return imageFileName;
 	}
-*/		
+		
 
 	
 /*

@@ -107,7 +107,7 @@ public class MemberControllerImpl implements MemberController {
    }
 
 	
-	
+/*	
 	@RequestMapping(value = { "/member/loginForm.do" , "/member/memberForm.do" }, method = RequestMethod.GET)
 	//@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
 	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -117,7 +117,7 @@ public class MemberControllerImpl implements MemberController {
 		mav.setViewName(viewName);
 		return mav;
 	}
-	
+*/	
 
 	@Override
 	@RequestMapping(value = "/member/login.do", method=RequestMethod.POST)
@@ -149,19 +149,38 @@ public class MemberControllerImpl implements MemberController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
-	public ModelAndView form(@RequestParam(value= "result", required=false) String result, HttpServletRequest request, HttpServletResponse response) throws Exception {
-								//로그인창 요청시 매개변수 result가 전송되면 변수 result에 값을 저장합니다. 최초로 로그인창을 요청할 때는 매개변수 result가 전송되지 않으므로 무시합니다.
+	public ModelAndView form(@RequestParam(value= "result", required=false) String result,
+							@RequestParam(value= "action", required=false) String action,
+							HttpServletRequest request,
+							HttpServletResponse response) throws Exception {
+								
 //			String viewName = getViewName(request);
 			String viewName = (String)request.getAttribute("viewName");
+			HttpSession session = request.getSession();
+			session.setAttribute("action", action);
 			ModelAndView mav = new ModelAndView();
 			mav.addObject("result", result);
-			
-			System.out.println(result);
-			
 			mav.setViewName(viewName);
+			
 			return mav;
 		}
+	
+	//기존 	"/member/*Form.do"코드
+//	@RequestMapping(value = "/member/*Form.do" , method = RequestMethod.GET)
+//	public ModelAndView form(@RequestParam(value= "result", required=false) String result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//								//로그인창 요청시 매개변수 result가 전송되면 변수 result에 값을 저장합니다. 최초로 로그인창을 요청할 때는 매개변수 result가 전송되지 않으므로 무시합니다.
+////			String viewName = getViewName(request);
+//			String viewName = (String)request.getAttribute("viewName");
+//			ModelAndView mav = new ModelAndView();
+//			mav.addObject("result", result);
+//			
+//			System.out.println(result);
+//			
+//			mav.setViewName(viewName);
+//			return mav;
+//		}
 	
 		/*
 		 * private String getViewName(HttpServletRequest request) throws Exception{

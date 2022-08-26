@@ -24,8 +24,19 @@
 	.cls2 {text-align:center;font-size:30px;}
 </style>
 <meta charset="UTF-8">
-<title>이정현_글목록창</title>
+<title>글목록창</title>
 </head>
+<script>
+	function fn_articleForm(isLogOn,articleForm,loginForm){
+		if(isLogOn != '' && isLogOn != 'false'){
+			location.href=articleForm;	//로그인 상태이면 글쓰기창으로 이동합니다.
+		} else{
+			alert("로그인 후 글쓰기가 가능합니다.")
+			location.href=loginForm+'?action=/board/articleForm.do';
+			//로그아웃 상태이면 action값으로 다음에 수행할 URL인 /board/articleForm.do를 전달하면서 로그인창으로 이동합니다.
+		}
+	}
+</script>
 <body>
 	<table align="center" border="1" width="80%">
 		<tr height="10" align="center" bgcolor="lightgreen">
@@ -71,7 +82,7 @@
 	</c:choose>
 	</table>
 	
-	<div class="cls2">
+	<%-- <div class="cls2">
 		<c:if test="${totArticles!= null }" >
 			<c:choose>
 				<c:when test="${totArticles >100 }"> <!-- 글 개수가 100 초과인경우 -->
@@ -106,7 +117,10 @@
 				</c:when>
 			</c:choose>
 		</c:if>
-	</div>
-	<a class="cls1" href="${contextPath }/board/articleForm.do"><p class="cls2">글쓰기</p></a>
+	</div> --%>
+<!-- <a class="cls1" href="${contextPath }/board/articleForm.do"><p class="cls2">글쓰기</p></a>	-->
+	<!-- 현재 로그인 상태를 함수인자로 미리 전달합니다. 로그인 상태일경우 이동할 글쓰기창 요청URL을 인자로 전달합니다. 로그인 상태가 아닐 경우 로그인창 요청 URL을 전달합니다. -->
+<a class="cls1" href="javascript:fn_articleForm('${isLogOn}','${contextPath }/board/articleForm.do',
+												'${contextPath }/member/loginForm.do')"><p class="cls2">글쓰기</p></a>
 </body>
 </html>

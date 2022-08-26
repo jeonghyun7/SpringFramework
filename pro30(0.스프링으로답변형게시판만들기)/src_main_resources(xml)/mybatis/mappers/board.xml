@@ -14,7 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="writeDate" column="writeDate"/>
 		<result property="imageFileName" column="imageFileName"/>
 	</resultMap>
-
+<!--  
+	<resultMap id="imgResult" type="imageVO">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="articleNO" column="articleNO" />
+		<result property="imageFileName" column="imageFileName" />
+	</resultMap>
+-->	
 
 	<select id="selectAllArticlesList" resultMap="articlesResult">
 		<![CDATA[
@@ -23,6 +29,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			(SELECT @start_with:=0,@articleNO:=@start_with, @level:=0) tbl JOIN t_board) fnc
 			left outer join t_board tb ON tb.articleNo = fnc.articleNo
 		]]>
-
 	</select>
+
+	<!-- 단일 이미지 추가 -->
+
+	<insert id="insertNewArticle" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT into t_board(articleNO, title, content, imageFileName, id)
+			VALUES(#{articleNO},#{title}, #{content}, #{imageFileName}, #{id})
+		]]>
+	</insert>
+	
+	<select id="selectNewArticleNO" resultType="int" >
+		<![CDATA[
+			SELECT nvl(max(articleNO), 0) +1 from t_board
+		]]>
+	</select>
+	
+
+	<select id="selectArticle" resultType="articleVO" parameterType="int">
+		<![CDATA[
+			SELECT * from t_board
+			where articleNO = #{articleNO}
+		]]>
+	</select>
+
+<!--  	
+	<update id="updateArticle" parameterType="java.util.Map">
+		update t_board
+		set title=#{title},
+		content=#{content}
+		<if test="imageFileName!='' and imageFileName!=null">
+		, imageFileName=#{imageFileName}
+		</if>
+		where articleNO=#{articleNO}
+	</update>
+	
+	
+	<delete id="deleteArticle" parameterType="int">
+		<![CDATA[
+		DELETE FROM t_board WHERE articleNO = #{articleNO} OR parentNO = #{articleNO}
+		]]>
+	</delete>
+	
+	<select id="selectNewImageFileNO" resultType="int">
+		<![CDATA[
+			SELECT nvl(max(imageFileNO),0) from t_imageFile
+		]]>
+	</select>
+	
+	<select id="selectImageFileList" resultMap="imgResult" parameterType="int">
+		<![CDATA[
+			SELECT * from t_imageFile
+			where articleNO=#{articleNO}
+		]]>
+	</select>
+	 -->
 </mapper>
