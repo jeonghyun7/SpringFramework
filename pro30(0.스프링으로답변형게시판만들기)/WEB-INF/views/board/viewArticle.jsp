@@ -15,6 +15,9 @@
 <meta charset="UTF-8">
 <title>글보기</title>
 <style type="text/css">
+	#tr_file_upload{
+		display:none;
+	}
 	#tr_btn_modify {
 		display:none;
 	}
@@ -114,7 +117,8 @@
 					<textarea rows="20" cols="60" name="content" id="i_content" disabled> ${article.content} </textarea>
 				</td>
 			</tr>
-			
+<%-- 		
+			<!-- 수정 반영 사진 불러오는 것 일단 잘 돌아가는 코드 -->
 			<c:if test="${not empty article.imageFileName && article.imageFileName != 'null' }">
 				<tr>
 					<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
@@ -131,24 +135,45 @@
 					</td>
 				</tr>
 			</c:if>
-<!--  
-			<c:if test="${empty article.imageFileName || article.imageFileName == 'null' }">
-				<tr>
-					<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
-						이미지
-					</td>
-					<td>
-						<input type="hidden" name="originalFileName" value="${article.imageFileName }" />
-						<img src="${contextPath }/download.do?articleNO=${article.articleNO}&imageFileName=${article.imageFileName}" id="preview" width=300 height=300 /> <br> 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="file" name="imageFileName" id="i_imageFileName" disabled onChange="readURL(this);" />
-					</td>
-				</tr>
-			</c:if>
--->			
+--%>	
+
+			<c:choose>
+				<c:when test="${not empty article.imageFileName && article.imageFileName!='null' }">
+					<tr>
+						<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
+							이미지
+						</td>
+						<td>
+							<input type="hidden" name="originalFileName" value="${article.imageFileName }"/>
+							<img src="${contextPath}/download.do?articleNO=${article.articleNO}&imageFileName=${article.imageFileName}" id="preview"/><br>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<input type="file" name="imageFileName" id="i_imageFileName" disabled onchange="readURL(this);"/>
+						</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<tr id="tr_file_upload">
+						<td width="150" align="center" bgcolor="#FF9933" rowspan="2">
+							이미지
+						</td>
+						<td>
+							<input type="hidden" name="originalFileName" value="${article.imageFileName }"/>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<img id="preview"/><br>
+							<input type="file" name="imageFileName" id="i_imageFileName" disabled onchange="readURL(this);"/>
+						</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
+	
 			<tr>
 				<td width="150" align="center" bgcolor="#FF9933">
 					등록일자
@@ -166,8 +191,10 @@
 			</tr>
 			<tr id="tr_btn">
 				<td colspan="2" align="center">
+				 <c:if test="${member.id == article.id }">
 					<input type="button" value="수정하기" onClick="fn_enable(this.form)">
 					<input type="button" value="삭제하기" onClick="fn_remove_article('${contextPath}/board/removeArticle.do',${article.articleNO})">
+				 </c:if>
 					<input type="button" value="리스트로 돌아가기" onClick="backToList(this.form)">
 					<input type="button" value="답글쓰기" onClick="fn_reply_form('${contextPath}/board/replyForm.do',${article.articleNO })">
 					

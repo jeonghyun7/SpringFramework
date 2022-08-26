@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 -->	
 
+	<!-- 전체글목록 조회할때 사용 -->
 	<select id="selectAllArticlesList" resultMap="articlesResult">
 		<![CDATA[
 			SELECT fnc.level, tb.articleNo, tb.parentNo, tb.title, tb.content, tb.writeDate, tb.imageFileName, tb.id
@@ -54,24 +55,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		]]>
 	</select>
 
-<!--  	
+
+	<!-- 수정하기사용(글 수정시 이미지를 수정한 경우만 이미지파일이름을 업데이트 -->	
+  	
 	<update id="updateArticle" parameterType="java.util.Map">
 		update t_board
-		set title=#{title},
-		content=#{content}
+		set title=#{title}, content=#{content}
 		<if test="imageFileName!='' and imageFileName!=null">
-		, imageFileName=#{imageFileName}
+		,imageFileName=#{imageFileName}
 		</if>
 		where articleNO=#{articleNO}
 	</update>
-	
-	
+		 	
 	<delete id="deleteArticle" parameterType="int">
 		<![CDATA[
 		DELETE FROM t_board WHERE articleNO = #{articleNO} OR parentNO = #{articleNO}
 		]]>
 	</delete>
 	
+<!--	
 	<select id="selectNewImageFileNO" resultType="int">
 		<![CDATA[
 			SELECT nvl(max(imageFileNO),0) from t_imageFile

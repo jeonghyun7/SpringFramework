@@ -33,7 +33,7 @@ public class BoardDAOImpl implements BoardDAO {
 		System.out.println("쿼리발동");
 		return articleNO;
 	}
-/*
+
 	@Override
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException {
 		
@@ -51,7 +51,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		sqlSession.delete("mapper.board.deleteArticle", articleNO);
 	}
-
+/*
 	@Override
 	public List selectImageFileList(int articleNO) throws DataAccessException {
 		List<ImageVO> imageFileList = null;

@@ -106,7 +106,7 @@ public class BoardControllerImpl implements BoardController {
 		return resEnt;
 	}
 	
-	/*
+	
 	//한 개의 이미지 보여주기
 	@RequestMapping(value="/board/viewArticle.do" ,method = RequestMethod.GET)
 	public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO,
@@ -119,23 +119,33 @@ public class BoardControllerImpl implements BoardController {
 		mav.addObject("article", articleVO);
 		return mav;
 	}
-
+	
 	//한 개 이미지 수정 기능
 	@RequestMapping(value="/board/modArticle.do" , method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest,
-			HttpServletResponse response) throws Exception {
+									HttpServletResponse response) throws Exception {
 		multipartRequest.setCharacterEncoding("utf-8");
 		Map<String,Object> articleMap = new HashMap<String, Object>();
 		Enumeration enu=multipartRequest.getParameterNames();
 		while(enu.hasMoreElements()) {
 			String name=(String)enu.nextElement();
 			String value=multipartRequest.getParameter(name);
+			System.out.println("오류찾기: 값"+value);
 			articleMap.put(name, value);
 		}
 		
 		String imageFileName= upload(multipartRequest);
+		HttpSession session = multipartRequest.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("member");
+		String id = memberVO.getId();
+		
+		System.out.println(id);
+		System.out.println(imageFileName);
+		
+		articleMap.put("id", id);
 		articleMap.put("imageFileName", imageFileName);
+		
 		
 		String articleNO=(String)articleMap.get("articleNO");
 		String message;
@@ -148,10 +158,11 @@ public class BoardControllerImpl implements BoardController {
 				File srcFile = new File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
 				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO);
 				FileUtils.moveFileToDirectory(srcFile, destDir, true);
-				
+				//위 세 줄은 새로 첨부한 파일을 폴더로 이동하는 과정
 				String originalFileName=(String)articleMap.get("originalFileName");
 				File oldFile = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO+"\\"+originalFileName);
 				oldFile.delete();
+				//위 세 줄은 기존파일을 삭제하는 것.
 			}
 			message = "<script>";
 			message += " alert('글을 수정했습니다.');";
@@ -176,7 +187,8 @@ public class BoardControllerImpl implements BoardController {
 	@RequestMapping(value="/board/removeArticle.do" ,method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO,
-								HttpServletRequest request, HttpServletResponse response) throws Exception {
+										HttpServletRequest request,
+										HttpServletResponse response) throws Exception {
 		response.setContentType("text/html; charset=UTF-8");
 		String message;
 		ResponseEntity resEnt=null;
@@ -203,7 +215,7 @@ public class BoardControllerImpl implements BoardController {
 		}
 		return resEnt;
 	}
-*/	
+	
 	//글쓰기창 눌렀을때 articleform.do나 loginform.do로 이동
 	@RequestMapping(value = "/board/*Form.do", method = RequestMethod.GET)
 	private ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {

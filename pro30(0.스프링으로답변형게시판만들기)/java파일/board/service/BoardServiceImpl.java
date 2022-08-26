@@ -28,7 +28,7 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardDAO.insertNewArticle(articleMap);
 	}
-/*	
+	
 	//단일 파일 보이기
 	@Override
 	public ArticleVO viewArticle(int articleNO) throws Exception {
@@ -47,6 +47,6 @@ public class BoardServiceImpl implements BoardService{
 		boardDAO.deleteArticle(articleNO);
 		
 	}
-*/
+
 	
 }
